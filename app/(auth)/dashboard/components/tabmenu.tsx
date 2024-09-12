@@ -8,7 +8,7 @@ import { TabsList } from '@/components/ui/tabs';
 export default function TabMenu({ content }: { content: TtabsContent }) {
   return (
     <div className='flex flex-col items-center justify-between px-3'>
-      <h1 className='my-2 text-2xl font-bold text-primary'>QuiCash</h1>
+      <h1 className='my-2 mt-6 text-3xl font-bold text-primary'>QuiCash</h1>
       <Input className='my-3 w-full' placeholder='search' />
       <TabsList className='mt-4 w-full'>
         {content.map((item, index) => (

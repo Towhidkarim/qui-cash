@@ -11,6 +11,8 @@ import {
   Receipt,
 } from 'lucide-react';
 import { TabsContent } from '@radix-ui/react-tabs';
+import TabHome from './components/tabcontents/tab-home';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export type TtabsContent = {
   title: string;
@@ -18,7 +20,7 @@ export type TtabsContent = {
   content: React.ReactNode;
 }[];
 const tabsContents = [
-  { title: 'home', icon: <HouseIcon />, content: '' },
+  { title: 'home', icon: <HouseIcon />, content: <TabHome /> },
   { title: 'payment transfer', icon: <ArrowLeftRight />, content: '' },
   { title: 'transaction history', icon: <Receipt />, content: '' },
   { title: 'my banks', icon: <BadgeDollarSign />, content: '' },
@@ -39,7 +41,9 @@ export default function Page() {
           <div className='w-3/5 border-l border-r'>
             {tabsContents.map((item, index) => (
               <TabsContent key={index} value={item.title}>
-                <FadeEffect>{item.title}</FadeEffect>
+                <ScrollArea className='h-svh'>
+                  <FadeEffect>{item.content}</FadeEffect>
+                </ScrollArea>
               </TabsContent>
             ))}
           </div>
