@@ -1,28 +1,32 @@
+import { Avatar, AvatarFallback } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { cn } from '@/lib/utils';
 import React from 'react';
 
 export default function RecentTransactions() {
   const transactionData = [
     {
-      name: 'Sotify',
+      name: 'Spotify',
       amount: 15,
       status: 'Pending',
       date: '11th September',
     },
     {
-      name: 'Sotify',
+      name: 'Spotify',
       amount: 15,
       status: 'Pending',
       date: '11th September',
     },
     {
-      name: 'Sotify',
+      name: 'Spotify',
       amount: 15,
       status: 'Pending',
       date: '11th September',
     },
   ];
+
+  const transactionClass = 'w-1/4 border-b bg-background py-5';
   return (
     <div className='w-full'>
       <div>
@@ -47,16 +51,26 @@ export default function RecentTransactions() {
         {transactionData.map((item, index) => (
           <div
             key={index}
-            className='flex w-full flex-row items-center rounded-lg bg-secondary'
+            className='flex h-24 w-full flex-row items-center bg-background'
           >
-            <div className='w-1/4 border-b bg-background py-3'>{item.name}</div>
-            <div className='w-1/4 border-b bg-background py-3'>
-              {item.amount}
+            <div
+              className={cn(
+                transactionClass,
+                '-mt-4 flex items-center justify-start gap-2',
+              )}
+            >
+              <Avatar>
+                <AvatarFallback>{item.name[0]}</AvatarFallback>{' '}
+              </Avatar>{' '}
+              {item.name}
             </div>
-            <div className='w-1/4 border-b bg-background py-3'>
+            <div className={cn(transactionClass, 'font-bold text-green-500')}>
+              ${item.amount}
+            </div>
+            <div className={transactionClass}>
               <Badge variant='outline'>{item.status}</Badge>
             </div>
-            <div className='w-1/4 border-b bg-background py-3'>{item.date}</div>
+            <div className={transactionClass}>{item.date}</div>
           </div>
         ))}
       </div>
