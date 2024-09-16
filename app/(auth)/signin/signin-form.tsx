@@ -16,6 +16,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { useMutation } from '@tanstack/react-query';
+import SignInAction from '@/lib/global-actions/SignInAction';
+import { toast } from 'sonner';
 
 const FormSchema = z.object({
   email: z.string().email(),
@@ -27,8 +30,18 @@ export function SignInForm({ className }: { className?: string }) {
     resolver: zodResolver(FormSchema),
   });
 
+  const { isPending, mutate: SignIn } = useMutation({
+    mutationFn: SignInAction,
+    onSuccess: (response) => {
+      if (response.ok)
+        toast(response.message, { description: 'Proceeding to Dashboard' });
+      else toast('Error Occured', { description: response.message });
+    },
+  });
+
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+    // console.log(data);
+    SignIn({ email: data.email, password: data.passWord });
   }
 
   return (
@@ -57,7 +70,7 @@ export function SignInForm({ className }: { className?: string }) {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder='******' {...field} />
+                <Input placeholder='******' type='password' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

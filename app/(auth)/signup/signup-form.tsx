@@ -8,7 +8,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,44 +23,28 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon } from 'lucide-react';
-
-const FormSchema = z.object({
-  email: z.string().email(),
-  passWord: z.string().min(6).max(64),
-  firstName: z
-    .string()
-    .regex(/^[A-Za-z]+$/, 'Must contain alphabets only')
-    .min(3)
-    .max(12),
-  lastName: z
-    .string()
-    .regex(/^[A-Za-z]+$/, 'Must contain alphabets only')
-    .min(3)
-    .max(12),
-  address: z.string().max(255),
-  state: z.string().min(2).max(3),
-  nid: z
-    .string()
-    .regex(/^[A-Za-z]+$/)
-    .min(8)
-    .max(18),
-  postalCode: z
-    .string()
-    .regex(/^[0-9]+$/, 'Must only contain digits')
-    .max(8),
-  dateObBirth: z.date({
-    required_error: 'A date of birth is required.',
-  }),
-});
+import { CalendarIcon, Loader } from 'lucide-react';
+import { UserTypeSchema } from '@/lib/type-schema';
+import { useMutation } from '@tanstack/react-query';
+import SignUpAction from '@/lib/global-actions/SignUpAction';
+import { toast } from 'sonner';
 
 export function SignUpForm({ className }: { className?: string }) {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
+  const form = useForm<z.infer<typeof UserTypeSchema>>({
+    resolver: zodResolver(UserTypeSchema),
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
+  const { isPending, mutate: SignUp } = useMutation({
+    mutationFn: SignUpAction,
+    onSuccess: (response) => {
+      if (response.ok)
+        toast(response.message, { description: 'Proceed to Sign In' });
+      else toast('Error Occured', { description: response.message });
+    },
+  });
+
+  function onSubmit(data: z.infer<typeof UserTypeSchema>) {
+    SignUp({ userData: data });
   }
 
   return (
@@ -100,7 +83,7 @@ export function SignUpForm({ className }: { className?: string }) {
         </div>
         <FormField
           control={form.control}
-          name='lastName'
+          name='address'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Address</FormLabel>
@@ -145,7 +128,7 @@ export function SignUpForm({ className }: { className?: string }) {
         </div>
         <FormField
           control={form.control}
-          name='dateObBirth'
+          name='dateOfBirth'
           render={({ field }) => (
             <FormItem>
               <FormLabel>Date of Birth</FormLabel>
@@ -223,14 +206,19 @@ export function SignUpForm({ className }: { className?: string }) {
             <FormItem>
               <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input placeholder='******' {...field} />
+                <Input placeholder='******' type='password' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button className='w-full' type='submit'>
+        <Button disabled={isPending} className='w-full' type='submit'>
+          {isPending ?? (
+            <span className='animate-spin'>
+              <Loader />
+            </span>
+          )}
           Sign In
         </Button>
       </form>

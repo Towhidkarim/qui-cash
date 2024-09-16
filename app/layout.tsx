@@ -1,7 +1,9 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import { Poppins } from 'next/font/google';
+import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
+import Provider from '@/components/provider';
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -31,7 +33,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang='en'>
-      <body className={`${poppins.className} antialiased`}>{children}</body>
+      <body className={`${poppins.className} antialiased`}>
+        <NextTopLoader color='#2299DD' />
+        <Provider>{children}</Provider>
+      </body>
     </html>
   );
 }

@@ -8,10 +8,12 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+
 import { ChartConfig } from '@/components/ui/chart';
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import RecentTransactions from './recent-transactions';
+import RecentTransactions from '../recent-transactions';
+import { MenuIcon } from 'lucide-react';
 
 export default function TabHome() {
   const userName = 'Towhid Karim';
@@ -44,17 +46,17 @@ export default function TabHome() {
 
   return (
     <div className='mx-6 mt-8'>
-      <h1 className='my-2 text-3xl font-semibold'>
+      <h1 className='my-2 text-2xl font-semibold md:text-3xl'>
         Welcome, <span className='text-primary/85'>{userName} </span>
       </h1>
       <h4 className='my-1 text-base text-muted-foreground'>
         Manage and access your accound and transactions efficiently
       </h4>
-      <div className='my-4 flex w-full flex-row justify-around gap-5'>
-        <div className='w-full sm:w-[48%]'>
+      <div className='my-4 flex w-full flex-col justify-around gap-5 md:flex-row'>
+        <div className='w-full md:w-[48%]'>
           <PieChartCard />
         </div>
-        <div className='w-full sm:w-[48%]'>
+        <div className='w-full md:w-[48%]'>
           <Card>
             <CardHeader className='items-center font-semibold'>
               <CardTitle>Bank Balances</CardTitle>
