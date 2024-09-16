@@ -19,6 +19,9 @@ import { cn } from '@/lib/utils';
 import { useMutation } from '@tanstack/react-query';
 import SignInAction from '@/lib/global-actions/SignInAction';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { routes } from '@/lib/constants';
+import { LoaderCircle } from 'lucide-react';
 
 const FormSchema = z.object({
   email: z.string().email(),
@@ -30,12 +33,14 @@ export function SignInForm({ className }: { className?: string }) {
     resolver: zodResolver(FormSchema),
   });
 
+  const router = useRouter();
   const { isPending, mutate: SignIn } = useMutation({
     mutationFn: SignInAction,
     onSuccess: (response) => {
-      if (response.ok)
+      if (response.ok) {
         toast(response.message, { description: 'Proceeding to Dashboard' });
-      else toast('Error Occured', { description: response.message });
+        router.push(routes.dashboard);
+      } else toast('Error Occured', { description: response.message });
     },
   });
 
@@ -76,7 +81,14 @@ export function SignInForm({ className }: { className?: string }) {
             </FormItem>
           )}
         />
-        <Button className='w-full' type='submit'>
+        <Button disabled={isPending} className='w-full' type='submit'>
+          {isPending ? (
+            <span className='mr-2 animate-spin'>
+              <LoaderCircle />
+            </span>
+          ) : (
+            ''
+          )}
           Sign In
         </Button>
       </form>

@@ -23,23 +23,27 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Textarea } from '@/components/ui/textarea';
 import { Calendar } from '@/components/ui/calendar';
-import { CalendarIcon, Loader } from 'lucide-react';
+import { CalendarIcon, LoaderCircle } from 'lucide-react';
 import { UserTypeSchema } from '@/lib/type-schema';
 import { useMutation } from '@tanstack/react-query';
 import SignUpAction from '@/lib/global-actions/SignUpAction';
 import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { routes } from '@/lib/constants';
 
 export function SignUpForm({ className }: { className?: string }) {
   const form = useForm<z.infer<typeof UserTypeSchema>>({
     resolver: zodResolver(UserTypeSchema),
   });
 
+  const router = useRouter();
   const { isPending, mutate: SignUp } = useMutation({
     mutationFn: SignUpAction,
     onSuccess: (response) => {
-      if (response.ok)
+      if (response.ok) {
         toast(response.message, { description: 'Proceed to Sign In' });
-      else toast('Error Occured', { description: response.message });
+        router.push(routes.signin);
+      } else toast('Error Occured', { description: response.message });
     },
   });
 
@@ -214,10 +218,12 @@ export function SignUpForm({ className }: { className?: string }) {
         />
 
         <Button disabled={isPending} className='w-full' type='submit'>
-          {isPending ?? (
-            <span className='animate-spin'>
-              <Loader />
+          {isPending ? (
+            <span className='mr-2 animate-spin'>
+              <LoaderCircle />
             </span>
+          ) : (
+            ''
           )}
           Sign In
         </Button>
