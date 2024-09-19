@@ -29,6 +29,10 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import BasicServices from './components/basic-services';
 import RecentTransactions from './components/recent-transactions';
+import { validateRequest } from '@/lib/db/auth';
+import { redirect } from 'next/navigation';
+import { routes } from '@/lib/constants';
+import CountUpAnimation from '@/components/count-up';
 
 export type TtabsContent = {
   title: string;
@@ -50,7 +54,10 @@ const basicServices = [
   { title: 'Add Funds', icon: <BadgePlus />, url: '' },
 ];
 
-export default function Page() {
+export default async function Page() {
+  const { user } = await validateRequest();
+  if (!user) redirect(routes.signin);
+
   return (
     <div className='h-svh w-full overflow-hidden'>
       <FadeEffect>
@@ -61,13 +68,15 @@ export default function Page() {
           <div className='h-svh w-full border-x px-2 lg:w-4/5'>
             <nav className='flex w-full items-start justify-between px-1 py-5 pr-2 md:px-5'>
               <div className='font-semibold'>
-                <p className='text-2xl text-primary/85 md:text-3xl'>{`Towhid Karim`}</p>
+                <p className='text-2xl capitalize text-primary/85 md:text-3xl'>
+                  {user.username}
+                </p>
                 <Badge
                   variant='outline'
                   className='border-primary text-xs text-foreground/70 sm:my-2'
                 >
-                  Balance: {` `}
-                  {`$1542`}
+                  Balance: {` $`}
+                  <CountUpAnimation value={1553} />
                 </Badge>
               </div>
               <Sheet>
