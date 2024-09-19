@@ -40,11 +40,19 @@ export type TtabsContent = {
   url: string;
 }[];
 const tabsContents = [
-  { title: 'home', icon: <HouseIcon />, url: '' },
-  { title: 'payment transfer', icon: <ArrowLeftRight />, url: '' },
-  { title: 'transaction history', icon: <Receipt />, url: '' },
-  { title: 'my banks', icon: <BadgeDollarSign />, url: '' },
-  { title: 'connect', icon: <CreditCard />, url: '' },
+  { title: 'home', icon: <HouseIcon />, url: routes.dashboard },
+  {
+    title: 'payment transfer',
+    icon: <ArrowLeftRight />,
+    url: routes.transfer,
+  },
+  {
+    title: 'transaction history',
+    icon: <Receipt />,
+    url: routes.transactionHistory,
+  },
+  { title: 'my banks', icon: <BadgeDollarSign />, url: routes.banks },
+  { title: 'connect', icon: <CreditCard />, url: routes.connect },
 ];
 
 const basicServices = [
@@ -86,13 +94,14 @@ export default async function Page() {
                   </Button>
                 </SheetTrigger>
                 <SheetContent>
-                  <SheetHeader>
+                  {/* <SheetHeader>
                     <SheetTitle>Are you absolutely sure?</SheetTitle>
                     <SheetDescription>
                       This action cannot be undone. This will permanently delete
                       your account and remove your data from our servers.
                     </SheetDescription>
-                  </SheetHeader>
+                  </SheetHeader> */}
+                  <TabMenu content={tabsContents} />
                 </SheetContent>
               </Sheet>
             </nav>

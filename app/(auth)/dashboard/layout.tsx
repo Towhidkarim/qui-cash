@@ -10,6 +10,7 @@ import {
   Receipt,
 } from 'lucide-react';
 import TabMenu from './components/tabmenu';
+import { routes } from '@/lib/constants';
 
 export default function Layout({
   children,
@@ -17,11 +18,19 @@ export default function Layout({
   children: React.ReactNode;
 }>) {
   const tabsContents = [
-    { title: 'home', icon: <HouseIcon />, content: '' },
-    { title: 'payment transfer', icon: <ArrowLeftRight />, content: '' },
-    { title: 'transaction history', icon: <Receipt />, content: '' },
-    { title: 'my banks', icon: <BadgeDollarSign />, content: '' },
-    { title: 'connect', icon: <CreditCard />, content: '' },
+    { title: 'home', icon: <HouseIcon />, url: routes.dashboard },
+    {
+      title: 'payment transfer',
+      icon: <ArrowLeftRight />,
+      url: routes.transfer,
+    },
+    {
+      title: 'transaction history',
+      icon: <Receipt />,
+      url: routes.transactionHistory,
+    },
+    { title: 'my banks', icon: <BadgeDollarSign />, url: routes.banks },
+    { title: 'connect', icon: <CreditCard />, url: routes.connect },
   ];
   return (
     <main className='w-svh flex flex-row gap-0'>
