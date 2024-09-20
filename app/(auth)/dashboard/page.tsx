@@ -5,6 +5,7 @@ import TabMenu from './components/tabmenu';
 import { Tabs } from '@/components/ui/tabs';
 import {
   ArrowLeftRight,
+  ArrowUpFromDot,
   BadgeDollarSign,
   BadgePlus,
   CircleDollarSign,
@@ -13,6 +14,7 @@ import {
   HouseIcon,
   MenuIcon,
   Receipt,
+  TrendingUp,
 } from 'lucide-react';
 import {
   Sheet,
@@ -74,18 +76,19 @@ export default async function Page() {
           </div> */}
         <div className='flex h-svh flex-row'>
           <div className='h-svh w-full border-x px-2 lg:w-4/5'>
-            <nav className='flex w-full items-start justify-between px-1 py-5 pr-2 md:px-5'>
+            <nav className='flex h-16 w-full items-start justify-between px-1 py-5 pr-2 md:px-5'>
               <div className='font-semibold'>
-                <p className='text-2xl capitalize text-primary/85 md:text-3xl'>
+                <p className='bg-transparent text-2xl capitalize text-primary/85 backdrop-blur-sm md:text-3xl'>
+                  <span className='text-foreground'>Welcome,</span>{' '}
                   {user.username}
                 </p>
-                <Badge
+                {/* <Badge
                   variant='outline'
                   className='border-primary text-xs text-foreground/70 sm:my-2'
                 >
                   Balance: {` $`}
-                  <CountUpAnimation value={1553} />
-                </Badge>
+                  <CountUpAnimation end={1553} />
+                </Badge> */}
               </div>
               <Sheet>
                 <SheetTrigger asChild>
@@ -93,7 +96,7 @@ export default async function Page() {
                     <MenuIcon />
                   </Button>
                 </SheetTrigger>
-                <SheetContent>
+                <SheetContent className='min-w-72'>
                   {/* <SheetHeader>
                     <SheetTitle>Are you absolutely sure?</SheetTitle>
                     <SheetDescription>
@@ -105,18 +108,28 @@ export default async function Page() {
                 </SheetContent>
               </Sheet>
             </nav>
-            <div className='px-1 md:px-5'>
-              <h1 className='my-2 font-semibold md:text-xl'>Basic Services</h1>
+            <ScrollArea className='h-[calc(100svh-4rem)] px-1 md:px-5'>
+              <br />
+              <h4 className='text-lg opacity-50'>Total Balance</h4>
+              <div className='mb-2 mt-2 flex text-3xl md:text-4xl'>
+                <CountUpAnimation end={5321} className='block' prefix='$' />
+              </div>
+              <Badge variant='outline' className='mb-4 opacity-60'>
+                <TrendingUp size={14} className='mx-1' /> 3.6% Than Last week
+              </Badge>
+              <h1 className='mb-0 mt-2 font-semibold md:text-xl'>
+                Basic Services
+              </h1>
               <BasicServices services={basicServices} />
               <br /> <br />
-              <div className='my-3 flex flex-row justify-between'>
+              <div className='my-3 flex flex-row items-center justify-between'>
                 <h1 className='textl-lg font-semibold md:text-xl'>
                   Recent Transactions
                 </h1>
-                <Button variant='outline'>View All</Button>
+                <Button variant='ghost'>View All</Button>
               </div>
               <RecentTransactions />
-            </div>
+            </ScrollArea>
           </div>
           <div className='hidden w-1/5 lg:block'>Side content</div>
         </div>

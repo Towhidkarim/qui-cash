@@ -21,7 +21,7 @@ export default function TabMenu({ content }: { content: TtabsContent }) {
             <Link
               href={item.url ?? '#'}
               className={cn(
-                'my-2 flex w-full items-center justify-start gap-4 whitespace-nowrap rounded-md py-3 pl-5 font-semibold capitalize text-foreground transition-all hover:bg-primary/10 focus-visible:scale-50',
+                'my-2 flex w-full items-center justify-start gap-4 truncate whitespace-nowrap rounded-md py-3 pl-5 font-semibold capitalize text-foreground transition-all hover:bg-primary/10 focus-visible:scale-50',
                 {
                   'bg-primary/75 text-primary-foreground hover:bg-primary/85':
                     isActive ||
