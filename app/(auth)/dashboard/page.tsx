@@ -25,7 +25,6 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { TabsContent } from '@radix-ui/react-tabs';
-import TabHome from './components/tabcontents/tab-home';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -35,6 +34,7 @@ import { validateRequest } from '@/lib/db/auth';
 import { redirect } from 'next/navigation';
 import { routes } from '@/lib/constants';
 import CountUpAnimation from '@/components/count-up';
+import AccountSection from './components/account-section';
 
 export type TtabsContent = {
   title: string;
@@ -110,13 +110,7 @@ export default async function Page() {
             </nav>
             <ScrollArea className='h-[calc(100svh-4rem)] px-1 md:px-5'>
               <br />
-              <h4 className='text-lg opacity-50'>Total Balance</h4>
-              <div className='mb-2 mt-2 flex text-3xl md:text-4xl'>
-                <CountUpAnimation end={5321} className='block' prefix='$' />
-              </div>
-              <Badge variant='outline' className='mb-4 opacity-60'>
-                <TrendingUp size={14} className='mx-1' /> 3.6% Than Last week
-              </Badge>
+              <AccountSection />
               <h1 className='mb-0 mt-2 font-semibold md:text-xl'>
                 Basic Services
               </h1>

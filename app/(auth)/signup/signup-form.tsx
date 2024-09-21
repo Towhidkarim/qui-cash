@@ -205,6 +205,19 @@ export function SignUpForm({ className }: { className?: string }) {
         />
         <FormField
           control={form.control}
+          name='mobileNumber'
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Mobile Number</FormLabel>
+              <FormControl>
+                <Input placeholder='ex: 01000000000' {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
           name='passWord'
           render={({ field }) => (
             <FormItem>
@@ -225,7 +238,7 @@ export function SignUpForm({ className }: { className?: string }) {
           ) : (
             ''
           )}
-          Sign In
+          Sign Up
         </Button>
       </form>
     </Form>

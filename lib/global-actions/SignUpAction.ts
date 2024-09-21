@@ -5,7 +5,7 @@ import { hash } from '@node-rs/argon2';
 import { UserTypeSchema } from '../type-schema';
 import { generateIdFromEntropySize } from 'lucia';
 import { db } from '../db/database';
-import { userTable } from '../db/schema';
+import { accountsTable, userTable } from '../db/schema';
 import { eq } from 'drizzle-orm';
 
 export default async function SignUpAction({
@@ -21,6 +21,7 @@ export default async function SignUpAction({
     lastName,
     passWord,
     address,
+    mobileNumber,
     nid,
     postalCode,
     state,
@@ -55,6 +56,7 @@ export default async function SignUpAction({
       username: firstName,
       passwordHash,
       address,
+      mobileNumber,
       dateOfBirth,
       firstName,
       lastName,
@@ -62,6 +64,7 @@ export default async function SignUpAction({
       postalCode,
       state,
     });
+    await db.insert(accountsTable).values({ ownerID: id, balance: 5 });
 
     return { ok: true, message: 'Signed Up Succesfully!' };
   } catch (error) {
