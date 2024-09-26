@@ -41,7 +41,7 @@ export const sessionTable = pgTable('session', {
 });
 
 export const accountsTable = pgTable('account', {
-  id: text('id')
+  accountID: text('accountID')
     .primaryKey()
     .notNull()
     .$defaultFn(() => 'ac' + generateIdFromEntropySize(10)),
@@ -65,11 +65,17 @@ export const transactionsTable = pgTable('transaction', {
     .primaryKey()
     .notNull()
     .$defaultFn(() => 'trx' + generateIdFromEntropySize(10)),
+  receiverUserID: text('receiverUserID')
+    .notNull()
+    .references(() => userTable.id),
+  senderUserID: text('senderUserID')
+    .notNull()
+    .references(() => userTable.id),
   senderAccountID: text('senderAccountID')
-    .references(() => accountsTable.id)
+    .references(() => accountsTable.accountID)
     .notNull(),
   receiverAccountID: text('receiverAccountID')
-    .references(() => accountsTable.id)
+    .references(() => accountsTable.accountID)
     .notNull(),
   status: varchar('status', {
     enum: ['success', 'pending', 'failed'],

@@ -3,7 +3,8 @@ import localFont from 'next/font/local';
 import { Poppins } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
-import Provider from '@/components/provider';
+import Providers from '@/components/provider';
+import { validateRequest } from '@/lib/db/auth';
 
 // const geistSans = localFont({
 //   src: "./fonts/GeistVF.woff",
@@ -26,16 +27,18 @@ export const metadata: Metadata = {
   description: '',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await validateRequest();
+
   return (
     <html lang='en'>
       <body className={`${poppins.className} antialiased`}>
         <NextTopLoader color='#2299DD' />
-        <Provider>{children}</Provider>
+        <Providers session={session}>{children}</Providers>
       </body>
     </html>
   );

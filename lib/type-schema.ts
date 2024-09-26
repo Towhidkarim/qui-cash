@@ -3,7 +3,7 @@ import z from 'zod';
 export const UserTypeSchema = z.object({
   email: z.string().email(),
   passWord: z.string().min(6).max(64),
-  mobileNumber: z.string().regex(/^[0-9]{9,10}$/),
+  mobileNumber: z.string().regex(/^[0-9]{9,11}$/),
   firstName: z
     .string()
     .regex(/^[A-Za-z]+$/, 'Must contain alphabets only')

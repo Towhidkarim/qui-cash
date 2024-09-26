@@ -7,3 +7,8 @@ export const routes = {
   connect: '/dashboard/connect',
   banks: '/dashboard/banks',
 };
+
+export const queryKeys = {
+  account: 'accountData',
+  recentTransactions: 'recentTransactions',
+};
