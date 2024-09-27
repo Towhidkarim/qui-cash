@@ -48,7 +48,7 @@ export default function RecentTransactions() {
   return (
     <div className='w-full'>
       <br />
-      {data.length === 0 ? (
+      {data.length === 0 || !data ? (
         <h1 className='mb-10 text-center'>No History</h1>
       ) : (
         <Table>

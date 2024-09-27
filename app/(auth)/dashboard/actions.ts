@@ -43,8 +43,8 @@ export async function GetTransactionHistoryAction(count: number) {
         status: transactionsTable.status,
       })
       .from(transactionsTable)
-      .innerJoin(userTable, eq(transactionsTable.receiverUserID, receiver.id))
-      .innerJoin(userTable, eq(transactionsTable.senderUserID, sender.id))
+      .innerJoin(receiver, eq(transactionsTable.receiverUserID, receiver.id))
+      .innerJoin(sender, eq(transactionsTable.senderUserID, sender.id))
       .where(
         or(
           eq(transactionsTable.senderAccountID, user.id),

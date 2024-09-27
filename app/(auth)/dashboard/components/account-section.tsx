@@ -9,14 +9,11 @@ import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useStore } from '@/lib/store';
 import { queryKeys } from '@/lib/constants';
+import { useAccountData } from '@/lib/hooks/useAccountData';
 // import { useEffect } from 'react';
 
 export default function AccountSection() {
-  const { data, isLoading, isError } = useQuery({
-    queryFn: async () => await GetAccountInfoAction(),
-    queryKey: [queryKeys.account],
-    refetchOnMount: false,
-  });
+  const { data, isLoading, isError } = useAccountData();
   // const store = useStore();
 
   const demo = useStore((state) => state.accountInfo);

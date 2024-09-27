@@ -12,3 +12,8 @@ export const queryKeys = {
   account: 'accountData',
   recentTransactions: 'recentTransactions',
 };
+export type TtabsContent = {
+  title: string;
+  icon: React.ReactNode;
+  url: string;
+}[];

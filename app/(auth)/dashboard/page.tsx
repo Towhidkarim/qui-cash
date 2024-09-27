@@ -15,15 +15,8 @@ import {
   MenuIcon,
   Receipt,
   TrendingUp,
+  LucideIcon,
 } from 'lucide-react';
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
 import { TabsContent } from '@radix-ui/react-tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Button } from '@/components/ui/button';
@@ -35,27 +28,7 @@ import { redirect } from 'next/navigation';
 import { routes } from '@/lib/constants';
 import CountUpAnimation from '@/components/count-up';
 import AccountSection from './components/account-section';
-
-export type TtabsContent = {
-  title: string;
-  icon: React.JSX.Element;
-  url: string;
-}[];
-const tabsContents = [
-  { title: 'home', icon: <HouseIcon />, url: routes.dashboard },
-  {
-    title: 'payment transfer',
-    icon: <ArrowLeftRight />,
-    url: routes.transfer,
-  },
-  {
-    title: 'transaction history',
-    icon: <Receipt />,
-    url: routes.transactionHistory,
-  },
-  { title: 'my banks', icon: <BadgeDollarSign />, url: routes.banks },
-  { title: 'connect', icon: <CreditCard />, url: routes.connect },
-];
+import Navbar from '@/components/Navbar';
 
 const basicServices = [
   { title: 'Transfer Funds', icon: <ArrowLeftRight />, url: '' },
@@ -65,49 +38,18 @@ const basicServices = [
 ];
 
 export default async function Page() {
-  const { user } = await validateRequest();
-  if (!user) redirect(routes.signin);
+  // const { user } = await validateRequest();
+  // if (!user) redirect(routes.signin);
 
   return (
-    <div className='h-svh w-full overflow-hidden'>
+    <main className='h-svh w-full overflow-hidden px-1 md:px-5'>
       <FadeEffect>
         {/* <div className='hidden w-1/5 min-w-56 sm:block'>
             {/* <TabMenu content={tabsContents} /> 
           </div> */}
         <div className='flex h-svh flex-row'>
-          <div className='h-svh w-full border-x px-2 lg:w-4/5'>
-            <nav className='flex h-16 w-full items-start justify-between px-1 py-5 pr-2 md:px-5'>
-              <div className='font-semibold'>
-                <p className='bg-transparent text-2xl capitalize text-primary/85 backdrop-blur-sm md:text-3xl'>
-                  <span className='text-foreground'>Welcome,</span>{' '}
-                  {user.username}
-                </p>
-                {/* <Badge
-                  variant='outline'
-                  className='border-primary text-xs text-foreground/70 sm:my-2'
-                >
-                  Balance: {` $`}
-                  <CountUpAnimation end={1553} />
-                </Badge> */}
-              </div>
-              <Sheet>
-                <SheetTrigger asChild>
-                  <Button variant='ghost' className='block p-2 sm:hidden'>
-                    <MenuIcon />
-                  </Button>
-                </SheetTrigger>
-                <SheetContent className='min-w-72'>
-                  {/* <SheetHeader>
-                    <SheetTitle>Are you absolutely sure?</SheetTitle>
-                    <SheetDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </SheetDescription>
-                  </SheetHeader> */}
-                  <TabMenu content={tabsContents} />
-                </SheetContent>
-              </Sheet>
-            </nav>
+          <div className='h-svh w-full px-2 lg:w-4/5'>
+            {/* <Navbar user={user} /> */}
             <ScrollArea className='h-[calc(100svh-4rem)] px-1 md:px-5'>
               <br />
               <AccountSection />
@@ -115,7 +57,7 @@ export default async function Page() {
                 Basic Services
               </h1>
               <BasicServices services={basicServices} />
-              <br /> <br />
+              <br />
               <div className='my-3 flex flex-row items-center justify-between'>
                 <h1 className='textl-lg font-semibold md:text-xl'>
                   Recent Transactions
@@ -128,6 +70,6 @@ export default async function Page() {
           <div className='hidden w-1/5 lg:block'>Side content</div>
         </div>
       </FadeEffect>
-    </div>
+    </main>
   );
 }

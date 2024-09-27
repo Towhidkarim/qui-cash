@@ -33,10 +33,8 @@ export default function Providers({
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <SessionContext.Provider value={session}>
-          <Toaster />
-          {children}
-        </SessionContext.Provider>
+        <Toaster />
+        {children}
       </QueryClientProvider>
     </>
   );

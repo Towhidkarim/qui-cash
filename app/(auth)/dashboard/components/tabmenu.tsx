@@ -1,7 +1,7 @@
 'use client';
 import { Input } from '@/components/ui/input';
 import React from 'react';
-import { TtabsContent } from '../page';
+import { TtabsContent } from '@/lib/constants';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -16,7 +16,7 @@ export default function TabMenu({ content }: { content: TtabsContent }) {
       <Input className='my-3 w-full' placeholder='search' />
       <div className='mt-4 w-full'>
         {content.map((item, index) => {
-          const isActive = pathName.includes(item.url);
+          const isActive = pathName === item.url;
           return (
             <Link
               href={item.url ?? '#'}
@@ -24,8 +24,7 @@ export default function TabMenu({ content }: { content: TtabsContent }) {
                 'my-2 flex w-full items-center justify-start gap-4 truncate whitespace-nowrap rounded-md py-3 pl-5 font-semibold capitalize text-foreground transition-all hover:bg-primary/10 focus-visible:scale-50',
                 {
                   'bg-primary/75 text-primary-foreground hover:bg-primary/85':
-                    isActive ||
-                    (pathName === routes.dashboard && item.title === 'home'),
+                    isActive,
                 },
               )}
               key={index}
