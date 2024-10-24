@@ -38,7 +38,7 @@ const basicServices = [
 ];
 
 export default async function Page() {
-  // const { user } = await validateRequest();
+  const { user } = await validateRequest();
   // if (!user) redirect(routes.signin);
 
   return (
@@ -49,7 +49,7 @@ export default async function Page() {
           </div> */}
         <div className='flex h-svh flex-row'>
           <div className='h-svh w-full px-2 lg:w-4/5'>
-            {/* <Navbar user={user} /> */}
+            <Navbar user={user} />
             <ScrollArea className='h-[calc(100svh-4rem)] px-1 md:px-5'>
               <br />
               <AccountSection />

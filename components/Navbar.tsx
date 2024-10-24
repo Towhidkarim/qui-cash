@@ -41,12 +41,12 @@ export const tabsContents: TtabsContent = [
   { title: 'connect', icon: <CreditCard />, url: routes.connect },
 ];
 
-export default function Navbar({ user }: { user: User }) {
+export default function Navbar({ user }: { user: User | null }) {
   return (
     <nav className='flex h-16 w-full items-center justify-between py-5 pr-2'>
       <div className='font-semibold'>
         <p className='bg-transparent text-2xl capitalize text-primary/85 backdrop-blur-sm md:text-3xl'>
-          <span className='text-foreground'></span> {user.username}
+          <span className='text-foreground'></span> {user?.username}
         </p>
       </div>
       <Sheet>
@@ -56,6 +56,7 @@ export default function Navbar({ user }: { user: User }) {
           </Button>
         </SheetTrigger>
         <SheetContent className='min-w-72'>
+          <SheetTitle>Menu</SheetTitle>
           {/* <SheetHeader>
                     <SheetTitle>Are you absolutely sure?</SheetTitle>
                     <SheetDescription>

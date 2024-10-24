@@ -31,6 +31,10 @@ const FormSchema = z.object({
 export function SignInForm({ className }: { className?: string }) {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
+    defaultValues: {
+      email: '',
+      passWord: '',
+    },
   });
 
   const router = useRouter();

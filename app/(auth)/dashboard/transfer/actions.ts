@@ -15,6 +15,7 @@ export async function FindUserNameAction({
     if (mobileNumber) {
       data = await db
         .select({
+          accountID: accountsTable.accountID,
           username: userTable.username,
           accountType: accountsTable.accountType,
         })
@@ -24,6 +25,7 @@ export async function FindUserNameAction({
     } else if (accountID && !mobileNumber) {
       data = await db
         .select({
+          accountID: accountsTable.accountID,
           username: userTable.username,
           accountType: accountsTable.accountType,
         })
@@ -31,7 +33,7 @@ export async function FindUserNameAction({
         .innerJoin(accountsTable, eq(accountsTable.ownerID, userTable.id))
         .where(eq(accountsTable.accountID, accountID));
     }
-    return data?.[0] ?? null;
+    return data;
   } catch (error) {
     console.log(error);
     return null;

@@ -17,6 +17,7 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
+import { useEffect, useState } from 'react';
 
 export const description = 'A line chart';
 
@@ -37,6 +38,10 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 export function BalanceChart() {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
+
+  if (!isMounted) return;
   return (
     <Card className='border-none shadow-none'>
       <CardHeader>

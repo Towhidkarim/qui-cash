@@ -9,33 +9,44 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { FindUserNameAction } from './actions';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 export default function TransferForm() {
   const [recipientMobileNumber, setRecipientMobileNumber] = useState('');
   const [recipientAccountID, setRecipientAccountID] = useState('');
   const debouncedValue = useDebounce(recipientMobileNumber, 1500);
+  const [recipientData, setRecipientData] = useState<{
+    accountID: string;
+    username: string;
+  }>();
 
   const queryClient = useQueryClient();
-  const { data, isPending } = useQuery({
-    queryFn: async () =>
+  const { data, isPending, mutate } = useMutation({
+    mutationFn: async () =>
       await FindUserNameAction({
         mobileNumber: recipientMobileNumber,
         accountID: undefined,
       }),
-    queryKey: ['user', debouncedValue],
+    mutationKey: ['user', debouncedValue],
   });
   useEffect(() => {
     if (debouncedValue.toString().length >= 10) {
       queryClient.invalidateQueries({ queryKey: ['user'] });
+      mutate();
     }
   }, [debouncedValue]);
+
+  const tempData = [
+    { username: 'Towhid Karim', accountType: 'personal' },
+    { username: 'Joh Doe', accountType: 'merchant' },
+  ];
 
   const inputLabelClassName = 'block py-2';
   const inputClassName = 'my-2 p-4';
   return (
-    <div className='my-5'>
+    <div className='my-5 md:mx-5'>
       <form
-        className='mx-auto flex max-w-md flex-col gap-4 rounded-lg border p-5 text-center shadow-sm'
+        className='mx-auto flex w-full flex-col gap-4 rounded-lg border p-5 text-center shadow-sm md:text-left'
         onSubmit={(e) => e.preventDefault()}
       >
         <Label className={inputLabelClassName}>
@@ -62,7 +73,31 @@ export default function TransferForm() {
         </Label>
         <div className='my-4'>
           {/* <LoaderCircle className='mx-auto animate-spin' /> */}
-          {data?.username}
+          {isPending && <LoaderCircle className='mx-auto animate-spin' />}
+          {data && <Label className='my-2'>Select Recipient Account</Label>}
+          <RadioGroup className='mx-auto flex w-full flex-col items-start justify-center gap-2 px-4 py-2'>
+            {data?.map((item, index) => (
+              <div
+                key={index}
+                className='flex w-full items-center space-x-2 text-left'
+              >
+                <RadioGroupItem
+                  className='peer hidden'
+                  value={item.accountID}
+                  id={item.accountID}
+                />
+                <Label
+                  htmlFor={item.accountID}
+                  className='w-full cursor-pointer rounded-sm p-3 ring-1 hover:bg-muted peer-data-[state=checked]:text-primary peer-data-[state=checked]:ring-primary peer-data-[state=unchecked]:ring-muted'
+                >
+                  <h3 className='font-semibold'>{item.username}</h3>
+                  <h4 className='text-sm capitalize text-muted-foreground'>
+                    {item.accountType} Account
+                  </h4>
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
         </div>
         <Label>
           Amount ($)
