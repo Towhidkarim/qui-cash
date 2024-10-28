@@ -48,8 +48,8 @@ export default async function Page() {
             {/* <TabMenu content={tabsContents} /> 
           </div> */}
         <div className='flex h-svh flex-row'>
-          <div className='h-svh w-full px-2 lg:w-4/5'>
-            <Navbar user={user} />
+          <div className='h-svh w-full'>
+            {/* <Navbar user={user} /> */}
             <ScrollArea className='h-[calc(100svh-4rem)] px-1 md:px-5'>
               <br />
               <AccountSection />
@@ -67,7 +67,6 @@ export default async function Page() {
               <RecentTransactions />
             </ScrollArea>
           </div>
-          <div className='hidden w-1/5 lg:block'>Side content</div>
         </div>
       </FadeEffect>
     </main>

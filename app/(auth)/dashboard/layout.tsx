@@ -10,7 +10,12 @@ import {
   Receipt,
 } from 'lucide-react';
 import TabMenu from './components/tabmenu';
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { routes } from '@/lib/constants';
+import { AppSidebar } from './components/app-sidebar';
+import Navbar from '@/components/Navbar';
+import { validateRequest } from '@/lib/db/auth';
+import FadeEffect from '@/components/framer/FadeEffect';
 
 export type TtabsContent = {
   title: string;
@@ -33,17 +38,23 @@ export const tabsContents: TtabsContent = [
   { title: 'connect', icon: <CreditCard />, url: routes.connect },
 ];
 
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { user } = await validateRequest();
   return (
-    <main className='w-svh flex flex-row gap-0'>
-      <div className='hidden min-h-svh w-1/5 min-w-56 border-r sm:block'>
-        <TabMenu content={tabsContents} />
-      </div>
-      <div className='w-full sm:w-4/5'>{children}</div>
-    </main>
+    <SidebarProvider>
+      <main className='w-svh flex w-full flex-row gap-0'>
+        {/* <div className='hidden min-h-svh  border-r sm:block'> */}
+        <AppSidebar items={tabsContents} />
+        {/* </div> */}
+        <div className='mx-4 w-full'>
+          <Navbar sidebarTrigger={<SidebarTrigger />} user={user} />
+          {children}
+        </div>
+      </main>
+    </SidebarProvider>
   );
 }

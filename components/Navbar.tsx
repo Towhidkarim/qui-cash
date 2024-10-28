@@ -8,6 +8,14 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb';
+import {
   ArrowLeftRight,
   ArrowUpFromDot,
   BadgeDollarSign,
@@ -24,6 +32,8 @@ import {
 import { Button } from './ui/button';
 import TabMenu from '@/app/(auth)/dashboard/components/tabmenu';
 import { routes, TtabsContent } from '@/lib/constants';
+import React from 'react';
+import Link from 'next/link';
 
 export const tabsContents: TtabsContent = [
   { title: 'home', icon: <HouseIcon />, url: routes.dashboard },
@@ -41,15 +51,35 @@ export const tabsContents: TtabsContent = [
   { title: 'connect', icon: <CreditCard />, url: routes.connect },
 ];
 
-export default function Navbar({ user }: { user: User | null }) {
+export default function Navbar({
+  user,
+  sidebarTrigger,
+}: {
+  user: User | null;
+  sidebarTrigger: React.ReactNode;
+}) {
   return (
     <nav className='flex h-16 w-full items-center justify-between py-5 pr-2'>
-      <div className='font-semibold'>
+      {/* <div className='font-semibold'>
         <p className='bg-transparent text-2xl capitalize text-primary/85 backdrop-blur-sm md:text-3xl'>
           <span className='text-foreground'></span> {user?.username}
         </p>
-      </div>
-      <Sheet>
+      </div> */}
+      <Breadcrumb>
+        <BreadcrumbList className='text-primary/80'>
+          <BreadcrumbItem className='hidden md:block'>
+            <BreadcrumbLink asChild>
+              <Link href={routes.dashboard}>Dashboard</Link>
+            </BreadcrumbLink>
+          </BreadcrumbItem>
+          <BreadcrumbSeparator className='hidden md:block' />
+          <BreadcrumbItem>
+            <BreadcrumbPage>Home</BreadcrumbPage>
+          </BreadcrumbItem>
+        </BreadcrumbList>
+      </Breadcrumb>
+      {sidebarTrigger}
+      {/* <Sheet>
         <SheetTrigger asChild>
           <Button variant='ghost' className='block p-2 sm:hidden'>
             <MenuIcon />
@@ -57,16 +87,10 @@ export default function Navbar({ user }: { user: User | null }) {
         </SheetTrigger>
         <SheetContent className='min-w-72'>
           <SheetTitle>Menu</SheetTitle>
-          {/* <SheetHeader>
-                    <SheetTitle>Are you absolutely sure?</SheetTitle>
-                    <SheetDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </SheetDescription>
-                  </SheetHeader> */}
+
           <TabMenu content={tabsContents} />
         </SheetContent>
-      </Sheet>
+      </Sheet> */}
     </nav>
   );
 }
