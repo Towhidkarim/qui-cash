@@ -79,18 +79,6 @@ export default function Navbar({
         </BreadcrumbList>
       </Breadcrumb>
       {sidebarTrigger}
-      {/* <Sheet>
-        <SheetTrigger asChild>
-          <Button variant='ghost' className='block p-2 sm:hidden'>
-            <MenuIcon />
-          </Button>
-        </SheetTrigger>
-        <SheetContent className='min-w-72'>
-          <SheetTitle>Menu</SheetTitle>
-
-          <TabMenu content={tabsContents} />
-        </SheetContent>
-      </Sheet> */}
     </nav>
   );
 }

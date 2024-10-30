@@ -42,7 +42,7 @@ export default async function Page() {
   // if (!user) redirect(routes.signin);
 
   return (
-    <main className='h-svh w-full overflow-hidden px-1 md:px-5'>
+    <div className='h-svh overflow-hidden px-1 md:px-5'>
       <FadeEffect>
         {/* <div className='hidden w-1/5 min-w-56 sm:block'>
             {/* <TabMenu content={tabsContents} /> 
@@ -69,6 +69,6 @@ export default async function Page() {
           </div>
         </div>
       </FadeEffect>
-    </main>
+    </div>
   );
 }

@@ -12,16 +12,15 @@ export default async function Page() {
   const { user } = await validateRequest();
   if (!user) redirect(routes.signin);
   return (
-    <main className='flex min-h-svh flex-row px-2 text-center md:px-5 md:text-left'>
-      <div className='w-full md:w-3/4'>
-        <Navbar user={user} />
+    <main className='flex h-svh flex-row px-2 text-center md:px-5 md:text-left'>
+      <div className='w-full'>
         <ScrollArea className='h-[calc(100svh-4rem)]'>
           <h1 className='my-2 text-2xl font-semibold'>Money Transfer</h1>
           <p className='text-sm text-muted-foreground'>
             Please provide specfic details related to the trnasfer
           </p>
           <Separator className='my-5' />
-          <div className='mx-auto grid max-w-md place-items-center rounded-lg border p-5'>
+          <div className='mx-auto grid max-w-md place-items-center rounded-lg p-5'>
             <h1 className='mb-4 mt-2'>Quick Transfer using QR Codes</h1>
             <Button
               variant='secondary'
@@ -43,7 +42,6 @@ export default async function Page() {
           <TransferForm />
         </ScrollArea>
       </div>
-      <div className='hidden md:block md:w-1/4'>Side content</div>
     </main>
   );
 }

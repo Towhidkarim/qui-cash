@@ -16,6 +16,7 @@ import { AppSidebar } from './components/app-sidebar';
 import Navbar from '@/components/Navbar';
 import { validateRequest } from '@/lib/db/auth';
 import FadeEffect from '@/components/framer/FadeEffect';
+import SideContent from './components/side-content';
 
 export type TtabsContent = {
   title: string;
@@ -46,13 +47,16 @@ export default async function Layout({
   const { user } = await validateRequest();
   return (
     <SidebarProvider>
-      <main className='w-svh flex w-full flex-row gap-0'>
+      <main className='flex h-svh w-full flex-row gap-0'>
         {/* <div className='hidden min-h-svh  border-r sm:block'> */}
         <AppSidebar items={tabsContents} />
         {/* </div> */}
         <div className='mx-4 w-full'>
           <Navbar sidebarTrigger={<SidebarTrigger />} user={user} />
-          {children}
+          <div className='flex h-[calc(100svh-4rem)] flex-row overflow-hidden'>
+            <div className='w-full md:w-3/4'>{children}</div>
+            <SideContent />
+          </div>
         </div>
       </main>
     </SidebarProvider>

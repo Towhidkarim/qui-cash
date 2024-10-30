@@ -36,9 +36,25 @@ export default async function TransferMoneyAction({
   if (!success) redirect('/');
 
   try {
+    // await db
+    //   .update(accountsTable)
+    //   .set({ balance: sql`${accountsTable.balance} + ${parsedData.amount}` })
+    //   .where(eq(accountsTable.accountID, parsedData.recipientAccountID));
     await db
       .update(accountsTable)
-      .set({ balance: sql`${accountsTable.balance} + ${parsedData.amount}` })
-      .where(eq(accountsTable.accountID, parsedData.recipientAccountID));
-  } catch (error) {}
+      .set({
+        balance: sql`balance + CASE 
+                    WHEN ${accountsTable.accountID} = ${parsedData.recipientAccountID} THEN ${parsedData.amount}
+                    WHEN ${accountsTable.accountID} = ${parsedData.senderAccountID} THEN -${parsedData.amount}
+                    ELSE 0 
+                  END`,
+      })
+      .where(
+        sql`${accountsTable.accountID} IN (${parsedData.recipientAccountID}, ${parsedData.senderAccountID})`,
+      )
+      .execute();
+    return { ok: true, message: 'Transfer Succesful' };
+  } catch (error) {
+    return { ok: false, message: 'Something Went Wrong!' };
+  }
 }
