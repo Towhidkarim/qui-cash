@@ -13,9 +13,7 @@ if (process.env.NODE_ENV === 'development') {
   }
   sql = global.__sql;
 } else {
-  sql = postgres(neonUrl as string, {
-    ssl: true,
-  });
+  sql = postgres(neonUrl as string);
 }
 
 // const queryClient = postgres(process.env.DATABASE_URL!);
