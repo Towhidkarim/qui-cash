@@ -51,7 +51,7 @@ export default async function SignUpAction({
 
   try {
     await db.insert(userTable).values({
-      userID: id,
+      id,
       email,
       username: firstName,
       passwordHash,
