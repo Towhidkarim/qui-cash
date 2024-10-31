@@ -28,7 +28,7 @@ export default function Page() {
                   href={routes.signin}
                   className='font-semibold text-primary/75 transition hover:opacity-70'
                 >
-                  Sign Up here
+                  Sign In here
                 </Link>{' '}
               </p>
             </div>

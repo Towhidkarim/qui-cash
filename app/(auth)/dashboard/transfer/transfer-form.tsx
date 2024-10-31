@@ -7,13 +7,16 @@ import { Separator } from '@/components/ui/separator';
 import { useDebounce } from '@/lib/hooks/useDebounce.';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { LoaderCircle } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { FindUserNameAction } from './actions';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import TransferMoneyAction from '@/lib/global-actions/TransferAction';
+import { toast } from 'sonner';
 
 export default function TransferForm() {
   const [recipientMobileNumber, setRecipientMobileNumber] = useState('');
   const [recipientAccountID, setRecipientAccountID] = useState('');
+  const amountRef = useRef(0);
   const debouncedValue = useDebounce(recipientMobileNumber, 1500);
   const [recipientData, setRecipientData] = useState<{
     accountID: string;
@@ -29,17 +32,32 @@ export default function TransferForm() {
       }),
     mutationKey: ['user', debouncedValue],
   });
+
+  const {
+    data: transferData,
+    isPending: transferIsPending,
+    mutate: TransferMoney,
+  } = useMutation({
+    mutationFn: async ({
+      senderAccountID,
+      recipientAccountID,
+      amount,
+    }: {
+      senderAccountID: string;
+      recipientAccountID: string;
+      amount: number;
+    }) => TransferMoneyAction({ senderAccountID, recipientAccountID, amount }),
+    onSuccess: (response) => {
+      toast('Success!', { description: response.message });
+    },
+  });
+
   useEffect(() => {
     if (debouncedValue.toString().length >= 10) {
       queryClient.invalidateQueries({ queryKey: ['user'] });
       mutate();
     }
   }, [debouncedValue]);
-
-  const tempData = [
-    { username: 'Towhid Karim', accountType: 'personal' },
-    { username: 'Joh Doe', accountType: 'merchant' },
-  ];
 
   const inputLabelClassName = 'block py-2';
   const inputClassName = 'my-2 p-4';
@@ -101,9 +119,25 @@ export default function TransferForm() {
         </div>
         <Label>
           Amount ($)
-          <Input type='number' className={inputClassName} placeholder='0' />
+          <Input
+            type='number'
+            className={inputClassName}
+            placeholder='0'
+            onChange={(e) => (amountRef.current = +e.target.value)}
+          />
         </Label>
-        <Button type='submit' className='w-full'>
+        <Button
+          onClick={() =>
+            TransferMoney({
+              amount: amountRef.current,
+              recipientAccountID: '',
+              senderAccountID: '',
+            })
+          }
+          disabled={transferIsPending}
+          type='submit'
+          className='w-full'
+        >
           Initiate Transfer
         </Button>
       </form>
