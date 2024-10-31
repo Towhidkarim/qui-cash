@@ -30,9 +30,14 @@ export async function GetTransactionHistoryAction(count: number) {
   if (!user) redirect(routes.signin);
 
   try {
+    const accountID = (
+      await db
+        .select({ id: accountsTable.accountID })
+        .from(accountsTable)
+        .where(eq(accountsTable.ownerID, user.id))
+    )[0].id;
     const sender = alias(userTable, 'sender');
     const receiver = alias(userTable, 'receiver');
-
     const history = await db
       .select({
         senderName: sender.username,
@@ -47,8 +52,8 @@ export async function GetTransactionHistoryAction(count: number) {
       .innerJoin(sender, eq(transactionsTable.senderUserID, sender.id))
       .where(
         or(
-          eq(transactionsTable.senderAccountID, user.id),
-          eq(transactionsTable.receiverAccountID, user.id),
+          eq(transactionsTable.senderAccountID, accountID),
+          eq(transactionsTable.receiverAccountID, accountID),
         ),
       );
 

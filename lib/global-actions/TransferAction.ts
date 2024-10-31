@@ -5,8 +5,9 @@ import { validateRequest } from '../db/auth';
 import { routes } from '../constants';
 import { z } from 'zod';
 import { db } from '../db/database';
-import { accountsTable } from '../db/schema';
+import { accountsTable, transactionsTable, userTable } from '../db/schema';
 import { eq, sql } from 'drizzle-orm';
+import { generateIdFromEntropySize } from 'lucia';
 
 type TransferInfo = {
   senderAccountID: string;
@@ -25,8 +26,8 @@ export default async function TransferMoneyAction({
   recipientAccountID,
   amount,
 }: z.infer<typeof TransferSchema>) {
-  const session = await validateRequest();
-  if (!session.user) redirect('/');
+  const { user } = await validateRequest();
+  if (!user) redirect('/');
 
   const { data: parsedData, success } = await TransferSchema.safeParseAsync({
     senderAccountID,
@@ -36,25 +37,41 @@ export default async function TransferMoneyAction({
   if (!success) redirect('/');
 
   try {
-    // await db
-    //   .update(accountsTable)
-    //   .set({ balance: sql`${accountsTable.balance} + ${parsedData.amount}` })
-    //   .where(eq(accountsTable.accountID, parsedData.recipientAccountID));
-    await db
-      .update(accountsTable)
-      .set({
-        balance: sql`balance + CASE 
-                    WHEN ${accountsTable.accountID} = ${parsedData.recipientAccountID} THEN ${parsedData.amount}
-                    WHEN ${accountsTable.accountID} = ${parsedData.senderAccountID} THEN -${parsedData.amount}
-                    ELSE 0 
-                  END`,
-      })
-      .where(
-        sql`${accountsTable.accountID} IN (${parsedData.recipientAccountID}, ${parsedData.senderAccountID})`,
-      )
-      .execute();
+    await db.transaction(async (tx) => {
+      const recipientUserID = (
+        await tx
+          .select({ id: accountsTable.ownerID })
+          .from(accountsTable)
+          .where(eq(accountsTable.accountID, parsedData.recipientAccountID))
+      )[0].id;
+
+      await tx
+        .update(accountsTable)
+        .set({ balance: sql`${accountsTable.balance} + ${parsedData.amount}` })
+        .where(eq(accountsTable.accountID, parsedData.recipientAccountID));
+
+      await tx
+        .update(accountsTable)
+        .set({ balance: sql`${accountsTable.balance} - ${parsedData.amount}` })
+        .where(eq(accountsTable.accountID, parsedData.senderAccountID));
+
+      const transactionsID = generateIdFromEntropySize(10);
+
+      await tx.insert(transactionsTable).values({
+        amount,
+        receiverAccountID: parsedData.recipientAccountID,
+        senderAccountID: parsedData.senderAccountID,
+        receiverUserID: recipientUserID,
+        senderUserID: user.id,
+        status: 'success',
+        transactionType: 'transfer',
+        transactionsID,
+      });
+    });
+
     return { ok: true, message: 'Transfer Succesful' };
   } catch (error) {
+    console.log(error);
     return { ok: false, message: 'Something Went Wrong!' };
   }
 }

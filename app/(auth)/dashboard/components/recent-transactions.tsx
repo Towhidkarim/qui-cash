@@ -9,34 +9,17 @@ import { useQuery } from '@tanstack/react-query';
 import { GetTransactionHistoryAction } from '../actions';
 import { queryKeys } from '@/lib/constants';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useSession } from '@/lib/useSession';
-import { useStore } from '@/lib/store';
 import { format } from 'date-fns';
+import { useUserData } from '@/lib/hooks/useUserData';
 
-export default function RecentTransactions() {
-  const transactionData = [
-    {
-      name: 'Spotify',
-      amount: 15,
-      status: 'Pending',
-      date: '11th Sept',
-    },
-    {
-      name: 'Spotify',
-      amount: 15,
-      status: 'Pending',
-      date: '11th Sept',
-    },
-    {
-      name: 'Spotify',
-      amount: 15,
-      status: 'Pending',
-      date: '11th Sept',
-    },
-  ];
-  const accountInfo = useStore((state) => state.accountInfo);
+export default function RecentTransactions({
+  entryCount,
+}: {
+  entryCount?: number;
+}) {
+  const { data: userData } = useUserData();
 
-  const RECENT_RECORD_COUNT = 5;
+  const RECENT_RECORD_COUNT = entryCount ?? 5;
   const { data, isLoading } = useQuery({
     queryFn: async () => GetTransactionHistoryAction(RECENT_RECORD_COUNT),
     queryKey: [queryKeys.recentTransactions],
@@ -48,7 +31,7 @@ export default function RecentTransactions() {
   return (
     <div className='w-full'>
       <br />
-      {data.length === 0 || !data ? (
+      {data.length === 0 ? (
         <h1 className='mb-10 text-center'>No History</h1>
       ) : (
         <Table>
@@ -57,7 +40,10 @@ export default function RecentTransactions() {
               <TableRow key={index}>
                 <TableCell className='flex max-w-[250px] flex-row items-center justify-start gap-2 truncate pl-0'>
                   <Avatar className=''>
-                    <AvatarFallback>{`temp`}</AvatarFallback>
+                    <AvatarFallback className='capitalize'>
+                      {/* {userData?.username?.charAt(0) ?? ''} */}
+                      {item.receiverName[0]}
+                    </AvatarFallback>
                   </Avatar>
                   <div className='flex flex-col truncate'>
                     <span className='font-semibold'>{item.secondPerson}</span>
@@ -74,7 +60,7 @@ export default function RecentTransactions() {
                 </TableCell>
 
                 <TableCell className='pr-0'>
-                  {format(item.transactionTime, 'pp')}
+                  {format(item.transactionTime, 'pp, PP')}
                   <span className='block text-xs font-semibold text-gray-500'>
                     {item.status}
                   </span>

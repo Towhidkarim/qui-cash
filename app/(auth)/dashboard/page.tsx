@@ -29,6 +29,7 @@ import { routes } from '@/lib/constants';
 import CountUpAnimation from '@/components/count-up';
 import AccountSection from './components/account-section';
 import Navbar from '@/components/Navbar';
+import Link from 'next/link';
 
 const basicServices = [
   { title: 'Transfer Funds', icon: <ArrowLeftRight />, url: '' },
@@ -62,9 +63,12 @@ export default async function Page() {
                 <h1 className='textl-lg font-semibold md:text-xl'>
                   Recent Transactions
                 </h1>
-                <Button variant='ghost'>View All</Button>
+                <Button variant='ghost' asChild>
+                  <Link href={routes.transactionHistory}>View All</Link>
+                </Button>
               </div>
               <RecentTransactions />
+              <br />
             </ScrollArea>
           </div>
         </div>

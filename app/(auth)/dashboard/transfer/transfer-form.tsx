@@ -12,6 +12,7 @@ import { FindUserNameAction } from './actions';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import TransferMoneyAction from '@/lib/global-actions/TransferAction';
 import { toast } from 'sonner';
+import { useAccountData } from '@/lib/hooks/useAccountData';
 
 export default function TransferForm() {
   const [recipientMobileNumber, setRecipientMobileNumber] = useState('');
@@ -22,6 +23,7 @@ export default function TransferForm() {
     accountID: string;
     username: string;
   }>();
+  const { data: accountData } = useAccountData();
 
   const queryClient = useQueryClient();
   const { data, isPending, mutate } = useMutation({
@@ -63,9 +65,9 @@ export default function TransferForm() {
   const inputClassName = 'my-2 p-4';
   return (
     <div className='my-5 md:mx-5'>
-      <form
+      <div
         className='mx-auto flex w-full flex-col gap-4 rounded-lg border p-5 text-center shadow-sm md:text-left'
-        onSubmit={(e) => e.preventDefault()}
+        // onSubmit={(e) => e.preventDefault()}
       >
         <Label className={inputLabelClassName}>
           Recipient Mobile Number
@@ -103,6 +105,7 @@ export default function TransferForm() {
                   className='peer hidden'
                   value={item.accountID}
                   id={item.accountID}
+                  onClick={() => setRecipientAccountID(item.accountID)}
                 />
                 <Label
                   htmlFor={item.accountID}
@@ -130,17 +133,16 @@ export default function TransferForm() {
           onClick={() =>
             TransferMoney({
               amount: amountRef.current,
-              recipientAccountID: '',
-              senderAccountID: '',
+              recipientAccountID: recipientAccountID,
+              senderAccountID: accountData?.accountID ?? '',
             })
           }
           disabled={transferIsPending}
-          type='submit'
           className='w-full'
         >
           Initiate Transfer
         </Button>
-      </form>
+      </div>
     </div>
   );
 }

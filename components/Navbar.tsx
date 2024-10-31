@@ -59,7 +59,7 @@ export default function Navbar({
   sidebarTrigger: React.ReactNode;
 }) {
   return (
-    <nav className='flex h-16 w-full items-center justify-between py-5 pr-2'>
+    <nav className='flex h-16 w-full items-center justify-between'>
       {/* <div className='font-semibold'>
         <p className='bg-transparent text-2xl capitalize text-primary/85 backdrop-blur-sm md:text-3xl'>
           <span className='text-foreground'></span> {user?.username}
