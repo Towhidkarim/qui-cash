@@ -7,9 +7,10 @@ import { eq } from 'drizzle-orm';
 export async function FindUserNameAction({
   mobileNumber,
   accountID,
-}:
-  | { mobileNumber: string; accountID: undefined }
-  | { mobileNumber: undefined; accountID: string }) {
+}: {
+  mobileNumber: string | undefined;
+  accountID: string | undefined;
+}) {
   try {
     let data;
     if (mobileNumber) {
@@ -33,7 +34,7 @@ export async function FindUserNameAction({
         .innerJoin(accountsTable, eq(accountsTable.ownerID, userTable.id))
         .where(eq(accountsTable.accountID, accountID));
     }
-    return data;
+    return data ? data[0] : null;
   } catch (error) {
     console.log(error);
     return null;

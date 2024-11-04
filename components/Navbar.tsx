@@ -34,6 +34,7 @@ import TabMenu from '@/app/(auth)/dashboard/components/tabmenu';
 import { routes, TtabsContent } from '@/lib/constants';
 import React from 'react';
 import Link from 'next/link';
+import NavTitle from './NavTitle';
 
 export const tabsContents: TtabsContent = [
   { title: 'home', icon: <HouseIcon />, url: routes.dashboard },
@@ -67,14 +68,16 @@ export default function Navbar({
       </div> */}
       <Breadcrumb>
         <BreadcrumbList className='text-primary/80'>
-          <BreadcrumbItem className='hidden md:block'>
+          <BreadcrumbItem className=''>
             <BreadcrumbLink asChild>
               <Link href={routes.dashboard}>Dashboard</Link>
             </BreadcrumbLink>
           </BreadcrumbItem>
-          <BreadcrumbSeparator className='hidden md:block' />
+          <BreadcrumbSeparator className='' />
           <BreadcrumbItem>
-            <BreadcrumbPage>Home</BreadcrumbPage>
+            <BreadcrumbPage>
+              <NavTitle />
+            </BreadcrumbPage>
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>

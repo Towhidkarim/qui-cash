@@ -24,6 +24,7 @@ export default function RecentTransactions({
     queryFn: async () => GetTransactionHistoryAction(RECENT_RECORD_COUNT),
     queryKey: [queryKeys.recentTransactions],
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
   });
 
   if (isLoading || !data) return <Skeleton className='w-full' />;
@@ -38,29 +39,37 @@ export default function RecentTransactions({
           <TableBody className=''>
             {data.map((item, index) => (
               <TableRow key={index}>
-                <TableCell className='flex max-w-[250px] flex-row items-center justify-start gap-2 truncate pl-0'>
+                <TableCell className='flex max-w-[250px] flex-row items-center justify-center gap-2 truncate pl-0'>
                   <Avatar className=''>
                     <AvatarFallback className='capitalize'>
                       {/* {userData?.username?.charAt(0) ?? ''} */}
-                      {item.receiverName[0]}
+                      {item.secondPerson[0]}
                     </AvatarFallback>
                   </Avatar>
                   <div className='flex flex-col truncate'>
                     <span className='font-semibold'>{item.secondPerson}</span>
-                    <span className='text-xs text-muted-foreground'>
+                    <span className='text-xs capitalize text-muted-foreground'>
                       {item.transactionType}
                     </span>
                   </div>
                 </TableCell>
-                <TableCell className='truncate px-4 font-semibold'>
-                  {`${new Intl.NumberFormat('en-US', {
-                    style: 'currency',
-                    currency: 'USD',
-                  }).format(item.amount)}`}
+                <TableCell
+                  className={cn('truncate px-4 font-semibold', {
+                    'text-green-500': item.transactionType === 'money received',
+                    'text-rose-500': item.transactionType === 'money sent',
+                  })}
+                >
+                  {`${item.transactionType === 'money received' ? '+' : '-'}${new Intl.NumberFormat(
+                    'en-US',
+                    {
+                      style: 'currency',
+                      currency: 'USD',
+                    },
+                  ).format(item.amount)}`}
                 </TableCell>
 
-                <TableCell className='pr-0'>
-                  {format(item.transactionTime, 'pp, PP')}
+                <TableCell className='pr-0 capitalize'>
+                  {format(item.transactionTime, 'p, PP')}
                   <span className='block text-xs font-semibold text-gray-500'>
                     {item.status}
                   </span>

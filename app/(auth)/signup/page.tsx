@@ -7,8 +7,12 @@ import dashboard from '@/public/images/screen_mockup.png';
 import Image from 'next/image';
 import { SignUpForm } from './signup-form';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { validateRequest } from '@/lib/db/auth';
+import { redirect } from 'next/navigation';
 
-export default function Page() {
+export default async function Page() {
+  const { user } = await validateRequest();
+  if (user) redirect(routes.dashboard);
   return (
     <main>
       <FadeEffect>

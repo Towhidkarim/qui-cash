@@ -66,7 +66,9 @@ export async function GetTransactionHistoryAction(count: number) {
           ? value.senderName
           : value.receiverName,
       transactionType:
-        value.receiverName === user.username ? 'money received' : 'money sent',
+        value.receiverName === user.username
+          ? ('money received' as const)
+          : ('money sent' as const),
     }));
 
     return refinedData;
