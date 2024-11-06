@@ -19,14 +19,32 @@ import SequenceTab, { clamp } from '@/components/ui/sequence-tab';
 import TransferCredential from './transfer-credential';
 import SelectRecipient from './select-recipient';
 import InitiateTransfer from './initiate-transfer';
+import { z } from 'zod';
 
 export type TTransferMode = 'transfer' | 'payment' | 'bill';
+export const TransferInfoSchema = z.object({
+  recipientName: z.string().min(3),
+  reference: z.string().min(1),
+  amount: z.number().min(1),
+});
 
 export default function TransferSection() {
   const totalSteps = 4;
   const [currentStep, setCurrentStep] = useState(0);
   const [transferMode, setTransferMode] = useState<TTransferMode>('transfer');
   const [transferCredential, setTransferCredential] = useState('');
+  const [reference, setReference] = useState<string>('');
+  const [amount, setAmount] = useState<number>(0);
+  const [accountInfo, setAccountInfo] = useState<{
+    userName: string;
+    accountID: string;
+    type: string;
+  }>();
+
+  const isNextDisabled =
+    (currentStep === 1 && transferCredential === '') ||
+    (currentStep === 2 &&
+      (reference === '' || amount === 0 || accountInfo === undefined));
 
   const previousTab = () => {
     setCurrentStep((prev) => clamp(0, prev - 1, totalSteps - 1));
@@ -36,7 +54,6 @@ export default function TransferSection() {
   };
   return (
     <div>
-      <h1 className='text-center text-xl font-semibold'>Transfer Funds</h1>
       <MileStone
         className='my-3 w-4/5'
         currentStep={currentStep + 1}
@@ -54,12 +71,20 @@ export default function TransferSection() {
               transferType={transferMode}
             />,
             <SelectRecipient
+              setAccountInfo={setAccountInfo}
+              setAmount={setAmount}
+              setReference={setReference}
               credential={transferCredential}
               currentTab={currentStep}
               selfTabIndex={2}
               transferMode={transferMode}
             />,
-            <InitiateTransfer />,
+            <InitiateTransfer
+              amount={amount}
+              recipientName={accountInfo?.userName ?? ''}
+              reference={reference}
+              recipientAccountID={accountInfo?.accountID ?? ''}
+            />,
           ]}
         />
         <CardFooter className='mt-5 flex flex-row justify-between'>
@@ -71,7 +96,7 @@ export default function TransferSection() {
             <ArrowLeft />
           </Button>
           <Button
-            disabled={currentStep === totalSteps - 1}
+            disabled={currentStep === totalSteps - 1 || isNextDisabled}
             className=''
             onClick={() => nextTab()}
           >

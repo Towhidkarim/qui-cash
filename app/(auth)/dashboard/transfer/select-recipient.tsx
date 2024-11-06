@@ -20,11 +20,25 @@ export default function SelectRecipient({
   selfTabIndex,
   credential,
   transferMode,
+  setReference,
+  setAmount,
+  setAccountInfo,
 }: {
   currentTab: number;
   credential: string;
   selfTabIndex: number;
   transferMode: TTransferMode;
+  setReference: (value: string) => void;
+  setAmount: (value: number) => void;
+  setAccountInfo: (
+    data:
+      | {
+          userName: string;
+          type: string;
+          accountID: string;
+        }
+      | undefined,
+  ) => void;
 }) {
   const findUserParameters =
     transferMode === 'transfer'
@@ -32,12 +46,29 @@ export default function SelectRecipient({
       : { mobileNumber: undefined, accountID: credential };
   const { data, mutate: fetchUser } = useMutation({
     mutationFn: async () => await FindUserNameAction(findUserParameters),
+    onSuccess: (data) => {
+      if (data)
+        setAccountInfo({
+          userName: data.username,
+          type: data.accountType,
+          accountID: data.accountID,
+        });
+    },
     mutationKey: ['fetchUser'],
   });
   useEffect(() => {
-    if (currentTab === selfTabIndex) fetchUser();
+    if (currentTab === selfTabIndex) {
+      fetchUser();
+      if (data)
+        setAccountInfo({
+          userName: data.username,
+          type: data.accountType,
+          accountID: data.accountID,
+        });
+      else setAccountInfo(undefined);
+    }
   }, [currentTab]);
-  console.log(data);
+
   return (
     <div>
       <CardHeader className='text-center'>
@@ -63,9 +94,21 @@ export default function SelectRecipient({
           <Skeleton className='h-16 w-full' />
         )}
         <div className='mt-8'>
-          <Label className='my-3 flex flex-col items-center justify-center gap-2'>
+          <Label className='my-3 flex flex-col justify-center gap-2'>
+            Reference/ID
+            <Input
+              onChange={(e) => setReference(e.target.value)}
+              type='text'
+              className='relative before:absolute before:left-2 before:top-1 before:content-["$"]'
+              placeholder='Your Reference/Customer ID'
+            />
+          </Label>
+        </div>
+        <div className='mt-8'>
+          <Label className='my-3 flex flex-col justify-center gap-2'>
             Amount
             <Input
+              onChange={(e) => setAmount(Number(e.target.value))}
               type='number'
               className='relative text-center before:absolute before:left-2 before:top-1 before:content-["$"]'
               min={0}
