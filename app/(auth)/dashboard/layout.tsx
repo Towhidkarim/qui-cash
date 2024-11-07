@@ -51,7 +51,7 @@ export default async function Layout({
         {/* <div className='hidden min-h-svh  border-r sm:block'> */}
         <AppSidebar items={tabsContents} />
         {/* </div> */}
-        <div className='mx-4 w-full'>
+        <div className='w-full px-2 md:mx-4'>
           <Navbar sidebarTrigger={<SidebarTrigger />} user={user} />
           <div className='flex h-[calc(100svh-4rem)] flex-row overflow-hidden'>
             <div className='w-full md:w-3/4'>{children}</div>

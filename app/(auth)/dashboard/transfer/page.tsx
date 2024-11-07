@@ -5,8 +5,9 @@ import { routes } from '@/lib/constants';
 import { validateRequest } from '@/lib/db/auth';
 import { ScanLine } from 'lucide-react';
 import { redirect } from 'next/navigation';
-import TransferForm from './transfer-form';
+
 import { ScrollArea } from '@/components/ui/scroll-area';
+import TransferSection from './transfer-section';
 
 export default async function Page() {
   const { user } = await validateRequest();
@@ -15,12 +16,10 @@ export default async function Page() {
     <main className='flex h-svh flex-row px-2 text-center md:px-5 md:text-left'>
       <div className='w-full'>
         <ScrollArea className='h-[calc(100svh-4rem)]'>
-          <h1 className='my-2 text-2xl font-semibold'>Money Transfer</h1>
-          <p className='text-sm text-muted-foreground'>
-            Please provide specfic details related to the trnasfer
-          </p>
+          <h1 className='my-2 text-2xl font-semibold'>Transfer Funds</h1>
           <Separator className='my-5' />
-          <div className='mx-auto grid max-w-md place-items-center rounded-lg p-5'>
+          <TransferSection />
+          {/* <div className='mx-auto grid max-w-md place-items-center rounded-lg p-5'>
             <h1 className='mb-4 mt-2'>Quick Transfer using QR Codes</h1>
             <Button
               variant='secondary'
@@ -39,7 +38,7 @@ export default async function Page() {
             </div>
             <h4>Transfer using their Mobile Number / Account ID</h4>
           </div>
-          <TransferForm />
+          <TransferForm /> */}
         </ScrollArea>
       </div>
     </main>

@@ -5,8 +5,12 @@ import Link from 'next/link';
 import { routes } from '@/lib/constants';
 import dashboard from '@/public/images/screen_mockup.png';
 import Image from 'next/image';
+import { validateRequest } from '@/lib/db/auth';
+import { redirect } from 'next/navigation';
 
-export default function Page() {
+export default async function Page() {
+  const { user } = await validateRequest();
+  if (user) redirect(routes.dashboard);
   return (
     <main>
       <FadeEffect>

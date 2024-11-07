@@ -9,11 +9,16 @@ import Image from 'next/image';
 import React from 'react';
 import { Separator } from '@/components/ui/separator';
 import { Progress } from '@/components/ui/progress';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { useAccountData } from '@/lib/hooks/useAccountData';
+import { GetAccountInfoAction } from '../actions';
 
 export default async function SideContent() {
   const { user } = await validateRequest();
+  const accountData = await GetAccountInfoAction();
+
   return (
-    <aside className='hidden h-svh lg:block'>
+    <ScrollArea className='hidden h-[calc(100svh-4rem)] lg:block'>
       <Image
         src={profileBanner}
         className='z-0 h-auto w-full rounded-t-sm'
@@ -21,11 +26,15 @@ export default async function SideContent() {
       />
       <div className='mx-4 block -translate-y-16'>
         <Avatar className=''>
-          <AvatarFallback className='size-24 text-2xl'>T</AvatarFallback>
+          <AvatarFallback className='size-24 text-2xl ring-4 ring-white'>
+            T
+          </AvatarFallback>
         </Avatar>
         <br />
         <h1 className='text-lg font-semibold'>{user?.username}</h1>
-        <h4 className='text-sm text-muted-foreground'>{user?.email}</h4>
+        <h4 className='text-sm capitalize text-muted-foreground'>
+          {`${accountData?.accountType} Account`}
+        </h4>
         <div className='my-8'>
           <h1 className='flex flex-row items-center justify-between font-semibold'>
             My Cards
@@ -70,6 +79,6 @@ export default async function SideContent() {
           </div>
         </div>
       </div>
-    </aside>
+    </ScrollArea>
   );
 }

@@ -7,5 +7,5 @@ export const useAccountData = () =>
     queryFn: async () => await GetAccountInfoAction(),
     queryKey: [queryKeys.account],
     refetchOnMount: false,
-    staleTime: 5 * 60 * 1000, //5 minutes
+    staleTime: 3 * 60 * 1000, //3 minutes
   });

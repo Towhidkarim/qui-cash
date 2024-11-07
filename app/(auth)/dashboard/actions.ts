@@ -4,7 +4,7 @@ import { routes } from '@/lib/constants';
 import { validateRequest } from '@/lib/db/auth';
 import { db } from '@/lib/db/database';
 import { accountsTable, transactionsTable, userTable } from '@/lib/db/schema';
-import { eq, or } from 'drizzle-orm';
+import { desc, eq, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import { redirect } from 'next/navigation';
 
@@ -30,9 +30,14 @@ export async function GetTransactionHistoryAction(count: number) {
   if (!user) redirect(routes.signin);
 
   try {
+    const accountID = (
+      await db
+        .select({ id: accountsTable.accountID })
+        .from(accountsTable)
+        .where(eq(accountsTable.ownerID, user.id))
+    )[0].id;
     const sender = alias(userTable, 'sender');
     const receiver = alias(userTable, 'receiver');
-
     const history = await db
       .select({
         senderName: sender.username,
@@ -47,10 +52,11 @@ export async function GetTransactionHistoryAction(count: number) {
       .innerJoin(sender, eq(transactionsTable.senderUserID, sender.id))
       .where(
         or(
-          eq(transactionsTable.senderAccountID, user.id),
-          eq(transactionsTable.receiverAccountID, user.id),
+          eq(transactionsTable.senderAccountID, accountID),
+          eq(transactionsTable.receiverAccountID, accountID),
         ),
-      );
+      )
+      .orderBy(desc(transactionsTable.transactionsTime));
 
     const refinedData = history.map((value) => ({
       ...value,
@@ -61,7 +67,9 @@ export async function GetTransactionHistoryAction(count: number) {
           ? value.senderName
           : value.receiverName,
       transactionType:
-        value.receiverName === user.username ? 'money received' : 'money sent',
+        value.receiverName === user.username
+          ? ('money received' as const)
+          : ('money sent' as const),
     }));
 
     return refinedData;

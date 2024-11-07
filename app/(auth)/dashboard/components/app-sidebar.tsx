@@ -73,7 +73,7 @@ export function AppSidebar({
                       })}
                       asChild
                     >
-                      <Link href={item.url}>
+                      <Link prefetch href={item.url}>
                         <span className=''>{item.icon}</span>
                         <span className='capitalize'>{item.title}</span>
                       </Link>
@@ -103,7 +103,7 @@ export function AppSidebar({
                       {`Towhid Karim`}
                     </span>
                     <span className='truncate text-xs'>
-                      {`towhidkarim123@gmail.com`}
+                      {`Personal Account`}
                     </span>
                   </div>
                   <ChevronsUpDown className='ml-auto size-4' />
@@ -126,7 +126,7 @@ export function AppSidebar({
                         {`Towhid Karim`}
                       </span>
                       <span className='truncate text-xs'>
-                        {`towhidkarim123@gmail.com`}
+                        {`Personal Account`}
                       </span>
                     </div>
                   </div>
