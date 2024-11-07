@@ -39,7 +39,7 @@ export default function RecentTransactions({
           <TableBody className=''>
             {data.map((item, index) => (
               <TableRow key={index}>
-                <TableCell className='flex max-w-[250px] flex-row items-center justify-center gap-2 truncate pl-0'>
+                <TableCell className='flex max-w-[250px] flex-row items-center justify-start gap-2 truncate pl-0'>
                   <Avatar className=''>
                     <AvatarFallback className='capitalize'>
                       {/* {userData?.username?.charAt(0) ?? ''} */}

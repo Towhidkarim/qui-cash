@@ -32,10 +32,10 @@ import Navbar from '@/components/Navbar';
 import Link from 'next/link';
 
 const basicServices = [
-  { title: 'Transfer Funds', icon: <ArrowLeftRight />, url: '' },
+  { title: 'Transfer Funds', icon: <ArrowLeftRight />, url: routes.transfer },
   { title: 'Add Funds', icon: <CircleDollarSign />, url: '' },
-  { title: 'Payment', icon: <HandCoins />, url: '' },
-  { title: 'Add Funds', icon: <BadgePlus />, url: '' },
+  { title: 'Payment', icon: <HandCoins />, url: routes.transfer },
+  { title: 'Add Funds', icon: <BadgePlus />, url: routes.addFunds },
 ];
 
 export default async function Page() {

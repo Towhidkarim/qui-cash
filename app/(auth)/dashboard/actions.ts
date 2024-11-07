@@ -4,7 +4,7 @@ import { routes } from '@/lib/constants';
 import { validateRequest } from '@/lib/db/auth';
 import { db } from '@/lib/db/database';
 import { accountsTable, transactionsTable, userTable } from '@/lib/db/schema';
-import { eq, or } from 'drizzle-orm';
+import { desc, eq, or } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import { redirect } from 'next/navigation';
 
@@ -55,7 +55,8 @@ export async function GetTransactionHistoryAction(count: number) {
           eq(transactionsTable.senderAccountID, accountID),
           eq(transactionsTable.receiverAccountID, accountID),
         ),
-      );
+      )
+      .orderBy(desc(transactionsTable.transactionsTime));
 
     const refinedData = history.map((value) => ({
       ...value,

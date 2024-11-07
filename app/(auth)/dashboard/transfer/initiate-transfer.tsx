@@ -19,10 +19,13 @@ import {
 } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
 import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useAccountData } from '@/lib/hooks/useAccountData';
 import TransferMoneyAction from '@/lib/global-actions/TransferAction';
 import { LoaderCircle } from 'lucide-react';
+import { toast } from 'sonner';
+import { useRouter } from 'next/navigation';
+import { queryKeys, routes } from '@/lib/constants';
 
 export default function InitiateTransfer({
   reference,
@@ -36,6 +39,8 @@ export default function InitiateTransfer({
   recipientAccountID: string;
 }) {
   const { data: accountData } = useAccountData();
+  const queryClient = useQueryClient();
+  const router = useRouter();
   const {
     data: transferResult,
     mutate: startTransfer,
@@ -47,6 +52,19 @@ export default function InitiateTransfer({
         recipientAccountID,
         amount,
       }),
+    onSuccess: (data) => {
+      if (data.ok) {
+        toast('Transaction Succesful', {
+          description: 'Returning to Dashboard',
+        });
+        queryClient.invalidateQueries({ queryKey: [queryKeys.account] });
+        router.push(routes.dashboard);
+      } else {
+        toast('Something went wrong', {
+          description: data.message,
+        });
+      }
+    },
   });
   return (
     <div>

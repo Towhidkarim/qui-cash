@@ -6,6 +6,7 @@ export const routes = {
   transfer: '/dashboard/transfer',
   connect: '/dashboard/connect',
   banks: '/dashboard/banks',
+  addFunds: '/dashboard/addfunds',
 };
 
 export const queryKeys = {
