@@ -4,7 +4,7 @@ import { routes } from '@/lib/constants';
 import { validateRequest } from '@/lib/db/auth';
 import { db } from '@/lib/db/database';
 import { accountsTable, transactionsTable, userTable } from '@/lib/db/schema';
-import { desc, eq, or } from 'drizzle-orm';
+import { and, desc, eq, gte, lt, or, sql } from 'drizzle-orm';
 import { alias } from 'drizzle-orm/pg-core';
 import { redirect } from 'next/navigation';
 
@@ -76,5 +76,41 @@ export async function GetTransactionHistoryAction(count: number) {
   } catch (error) {
     console.log(error);
     return null;
+  }
+}
+
+export async function GetRecentTransactionTotal() {
+  const { user } = await validateRequest();
+  if (!user) redirect(routes.signin);
+
+  try {
+    const sevenDaysAgo = sql`NOW() - INTERVAL '7 days'`;
+    const outwardAmount = await db
+      .select({
+        sum: sql<number>`cast(sum(${transactionsTable.amount}) as int)`,
+      })
+      .from(transactionsTable)
+      .where(
+        and(
+          eq(transactionsTable.senderUserID, user.id),
+          gte(transactionsTable.transactionsTime, sevenDaysAgo),
+        ),
+      );
+
+    const inwardAmount = await db
+      .select({
+        sum: sql<number>`cast(sum(${transactionsTable.amount}) as int)`,
+      })
+      .from(transactionsTable)
+      .where(
+        and(
+          eq(transactionsTable.receiverAccountID, user.id),
+          gte(transactionsTable.transactionsTime, sevenDaysAgo),
+        ),
+      );
+
+    return { outward: outwardAmount[0].sum, inward: inwardAmount[0].sum };
+  } catch (error) {
+    console.log(error);
   }
 }
