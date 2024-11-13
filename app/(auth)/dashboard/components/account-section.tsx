@@ -3,8 +3,8 @@
 import { BalanceChart } from '@/components/charts/balance-chart';
 import CountUpAnimation from '@/components/count-up';
 import { Badge } from '@/components/ui/badge';
-import { TrendingUp } from 'lucide-react';
-import { GetAccountInfoAction } from '../actions';
+import { TrendingDown, TrendingUp } from 'lucide-react';
+import { GetAccountInfoAction, GetRecentTransactionTotal } from '../actions';
 import { useQuery } from '@tanstack/react-query';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useStore } from '@/lib/store';
@@ -14,12 +14,17 @@ import { useAccountData } from '@/lib/hooks/useAccountData';
 
 export default function AccountSection() {
   const { data, isLoading, isError } = useAccountData();
+  const { data: transactionSum, isLoading: sumIsLoading } = useQuery({
+    queryFn: async () => GetRecentTransactionTotal(),
+    queryKey: [queryKeys.account, queryKeys.recentTransactions],
+    staleTime: 5 * 60 * 1000,
+  });
   // const store = useStore();
 
   // if (isLoading) return <></>;
   const demo = useStore((state) => state.accountInfo);
   const setDemo = useStore((state) => state.setAccountInfo);
-  if (isLoading || isError || !data)
+  if (isLoading || isError || !data || sumIsLoading || !transactionSum)
     return <Skeleton className='min-h-72 w-full rounded-md' />;
   // else setDemo(data);
   return (
@@ -44,13 +49,27 @@ export default function AccountSection() {
         </div>
         <div>
           <div className='text- mt-2 flex text-xl text-green-500 md:text-2xl'>
-            <CountUpAnimation end={200} className='block' prefix='+$' />
+            <CountUpAnimation
+              end={transactionSum?.inward ?? 0}
+              className='block'
+              prefix='+$'
+            />
           </div>
           <div className='mb-2 flex text-xl text-destructive md:text-2xl'>
-            <CountUpAnimation end={100} className='block' prefix='-$' />
+            <CountUpAnimation
+              end={transactionSum?.outward ?? 0}
+              className='block'
+              prefix='-$'
+            />
           </div>
           <Badge variant='outline' className='mb-4 opacity-60'>
-            <TrendingUp size={14} className='mx-1' /> 3.6% Than Last week
+            {transactionSum &&
+            transactionSum?.outward > transactionSum?.inward ? (
+              <TrendingUp size={14} className='mx-1' />
+            ) : (
+              <TrendingDown size={14} className='mx-1' />
+            )}
+            Spent Last week
           </Badge>
         </div>
       </div>
