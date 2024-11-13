@@ -52,7 +52,9 @@ export default async function TransferMoneyAction({
 
       await tx
         .update(accountsTable)
-        .set({ balance: sql`${accountsTable.balance} - ${parsedData.amount}` })
+        .set({
+          balance: sql`${accountsTable.balance} - ${parsedData.amount} - ${parsedData.amount * 0.015}`,
+        })
         .where(eq(accountsTable.accountID, parsedData.senderAccountID));
 
       const transactionsID = generateIdFromEntropySize(10);

@@ -44,7 +44,7 @@ export default function TransferSection() {
   const isNextDisabled =
     (currentStep === 1 && transferCredential === '') ||
     (currentStep === 2 &&
-      (reference === '' || amount === 0 || accountInfo === undefined));
+      (reference === '' || amount <= 0 || accountInfo === undefined));
 
   const previousTab = () => {
     setCurrentStep((prev) => clamp(0, prev - 1, totalSteps - 1));
