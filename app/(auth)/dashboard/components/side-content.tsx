@@ -12,6 +12,7 @@ import { Progress } from '@/components/ui/progress';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useAccountData } from '@/lib/hooks/useAccountData';
 import { GetAccountInfoAction } from '../actions';
+import CreditCard from './credit-card';
 
 export default async function SideContent() {
   const { user } = await validateRequest();
@@ -42,23 +43,10 @@ export default async function SideContent() {
               <Plus className='' />
             </Button>
           </h1>
-          <div className='relative my-2 h-44 w-full rounded-lg bg-gray-700 text-white'>
-            <div className='flex h-full flex-col justify-between px-5 py-6'>
-              <span className='text-lg capitalize'>{user?.username}</span>
-              <span>
-                <span className='flex w-full flex-row justify-between'>
-                  <h4>{user?.username}</h4>
-                  {`12/24`}
-                </span>
-                <span className='mt-2 text-xl'>•••• •••• •••• 1234</span>
-              </span>
-            </div>
-            <Image
-              src={visaImage}
-              alt='visa'
-              className='pointer-events-none absolute bottom-2 right-4 h-auto w-auto'
-            />
-          </div>
+          <CreditCard
+            userName={user?.username ?? ''}
+            cardNumber='1234123412341234'
+          />
           <Separator orientation='horizontal' className='my-6' />
           <div className=''>
             <h1 className='mb-2 flex flex-row items-center justify-between font-semibold'>
