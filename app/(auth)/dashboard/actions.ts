@@ -104,7 +104,7 @@ export async function GetRecentTransactionTotal() {
       .from(transactionsTable)
       .where(
         and(
-          eq(transactionsTable.receiverAccountID, user.id),
+          eq(transactionsTable.receiverUserID, user.id),
           gte(transactionsTable.transactionsTime, sevenDaysAgo),
         ),
       );

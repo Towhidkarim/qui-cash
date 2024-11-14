@@ -5,6 +5,7 @@ export const routes = {
   transactionHistory: '/dashboard/history',
   transfer: '/dashboard/transfer',
   connect: '/dashboard/connect',
+  cards: '/dashboard/cards',
   banks: '/dashboard/banks',
   addFunds: '/dashboard/addfunds',
 };

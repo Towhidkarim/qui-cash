@@ -17,6 +17,7 @@ import Navbar from '@/components/Navbar';
 import { validateRequest } from '@/lib/db/auth';
 import FadeEffect from '@/components/framer/FadeEffect';
 import SideContent from './components/side-content';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 export type TtabsContent = {
   title: string;
@@ -36,7 +37,7 @@ export const tabsContents: TtabsContent = [
     url: routes.transactionHistory,
   },
   { title: 'my banks', icon: <BadgeDollarSign />, url: routes.banks },
-  { title: 'connect', icon: <CreditCard />, url: routes.connect },
+  { title: 'cards', icon: <CreditCard />, url: routes.cards },
 ];
 
 export default async function Layout({
