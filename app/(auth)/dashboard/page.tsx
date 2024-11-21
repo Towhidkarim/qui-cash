@@ -16,6 +16,7 @@ import {
   Receipt,
   TrendingUp,
   LucideIcon,
+  ScanQrCode,
 } from 'lucide-react';
 import { TabsContent } from '@radix-ui/react-tabs';
 import { ScrollArea } from '@/components/ui/scroll-area';
@@ -33,7 +34,7 @@ import Link from 'next/link';
 
 const basicServices = [
   { title: 'Transfer Funds', icon: <ArrowLeftRight />, url: routes.transfer },
-  { title: 'Add Funds', icon: <CircleDollarSign />, url: '' },
+  { title: 'QR Scan', icon: <ScanQrCode />, url: routes.scan },
   { title: 'Payment', icon: <HandCoins />, url: routes.transfer },
   { title: 'Add Funds', icon: <BadgePlus />, url: routes.addFunds },
 ];

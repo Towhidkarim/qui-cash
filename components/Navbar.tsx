@@ -35,6 +35,7 @@ import { routes, TtabsContent } from '@/lib/constants';
 import React from 'react';
 import Link from 'next/link';
 import NavTitle from './NavTitle';
+import MyQRCode from '@/app/(auth)/dashboard/components/my-qr-code';
 
 export const tabsContents: TtabsContent = [
   { title: 'home', icon: <HouseIcon />, url: routes.dashboard },
@@ -81,7 +82,10 @@ export default function Navbar({
           </BreadcrumbItem>
         </BreadcrumbList>
       </Breadcrumb>
-      {sidebarTrigger}
+      <div className='flex items-center justify-center gap-2'>
+        <MyQRCode />
+        {sidebarTrigger}
+      </div>
     </nav>
   );
 }

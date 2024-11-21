@@ -8,10 +8,12 @@ export const routes = {
   cards: '/dashboard/cards',
   banks: '/dashboard/banks',
   addFunds: '/dashboard/addfunds',
+  scan: '/dashboard/scan',
 };
 
 export const queryKeys = {
   account: 'accountData',
+  user: 'userData',
   recentTransactions: 'recentTransactions',
 };
 export type TtabsContent = {
