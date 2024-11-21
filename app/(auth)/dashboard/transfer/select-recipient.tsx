@@ -57,7 +57,7 @@ export default function SelectRecipient({
     mutationKey: ['fetchUser'],
   });
   useEffect(() => {
-    if (currentTab === selfTabIndex) {
+    if (true) {
       fetchUser();
       if (data)
         setAccountInfo({
@@ -68,12 +68,14 @@ export default function SelectRecipient({
       else setAccountInfo(undefined);
     }
   }, [currentTab]);
+  // if (transferMode !== 'transfer') fetchUser();
 
   return (
     <div>
       <CardHeader className='text-center'>
         <CardTitle>Recipient and Amount</CardTitle>
         <CardDescription>Transferring to</CardDescription>
+        {credential}
       </CardHeader>
       <CardContent>
         {data ? (

@@ -5,7 +5,7 @@ import GetUserInfoAction from '../global-actions/GetUserInfoAction';
 export const useUserData = () =>
   useQuery({
     queryFn: async () => await GetUserInfoAction(),
-    queryKey: [queryKeys.account],
+    queryKey: [queryKeys.user],
     refetchOnMount: false,
     staleTime: 5 * 60 * 1000, //5 minutes
   });

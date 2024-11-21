@@ -41,6 +41,8 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useUserData } from '@/lib/hooks/useUserData';
+import { useAccountData } from '@/lib/hooks/useAccountData';
 
 export function AppSidebar({
   items,
@@ -48,6 +50,8 @@ export function AppSidebar({
   items: { title: string; url: string; icon: React.ReactNode }[];
 }) {
   const pathName = usePathname();
+  const { data: userData } = useUserData();
+  const { data: accountData } = useAccountData();
 
   return (
     <Sidebar className=''>
@@ -99,11 +103,11 @@ export function AppSidebar({
                     <AvatarFallback className='rounded-lg'>T</AvatarFallback>
                   </Avatar>
                   <div className='grid flex-1 text-left text-sm leading-tight'>
-                    <span className='truncate font-semibold'>
-                      {`Towhid Karim`}
+                    <span className='truncate font-semibold capitalize'>
+                      {userData?.username}
                     </span>
-                    <span className='truncate text-xs'>
-                      {`Personal Account`}
+                    <span className='truncate text-xs capitalize'>
+                      {accountData?.accountType}
                     </span>
                   </div>
                   <ChevronsUpDown className='ml-auto size-4' />
@@ -123,10 +127,10 @@ export function AppSidebar({
                     </Avatar>
                     <div className='grid flex-1 text-left text-sm leading-tight'>
                       <span className='truncate font-semibold'>
-                        {`Towhid Karim`}
+                        {userData?.username}
                       </span>
-                      <span className='truncate text-xs'>
-                        {`Personal Account`}
+                      <span className='truncate text-xs capitalize'>
+                        {accountData?.accountType}
                       </span>
                     </div>
                   </div>

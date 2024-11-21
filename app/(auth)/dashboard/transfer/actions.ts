@@ -34,6 +34,7 @@ export async function FindUserNameAction({
         .innerJoin(accountsTable, eq(accountsTable.ownerID, userTable.id))
         .where(eq(accountsTable.accountID, accountID));
     }
+    // console.log(data);
     return data ? data[0] : null;
   } catch (error) {
     console.log(error);

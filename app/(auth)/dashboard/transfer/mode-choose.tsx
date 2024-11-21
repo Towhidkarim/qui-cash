@@ -7,8 +7,10 @@ import {
 } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Banknote, HandCoins, Receipt } from 'lucide-react';
+import { Banknote, HandCoins, Receipt, ScanQrCode } from 'lucide-react';
 import { TTransferMode } from './transfer-section';
+import { Separator } from '@/components/ui/separator';
+import { Button } from '@/components/ui/button';
 
 const paymentModes = [
   { name: 'Transfer', code: 'transfer', icon: <HandCoins /> },
@@ -52,6 +54,13 @@ export default function ModeChoose({
             </div>
           ))}
         </RadioGroup>
+        <Separator className='my-10' />
+        <div className='mx-auto mt-2 flex flex-col items-center justify-center gap-3'>
+          <h2 className='text-center text-muted-foreground'>Scan to pay</h2>
+          <Button variant='outline' size='icon' className='size-12 rounded-2xl'>
+            <ScanQrCode size={36} />
+          </Button>
+        </div>
       </CardContent>
     </div>
   );
