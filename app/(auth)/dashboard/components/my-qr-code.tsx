@@ -21,7 +21,7 @@ export default function MyQRCode() {
           <QrCode />
         </Button>
       </DialogTrigger>
-      <DialogContent className='my-4 flex flex-col items-center justify-center'>
+      <DialogContent className='my-4 flex max-w-80 flex-col items-center justify-center rounded-lg lg:max-w-96'>
         <DialogHeader>
           <DialogTitle>Your Account QR Code</DialogTitle>
           <DialogDescription className='text-center'>
