@@ -43,6 +43,7 @@ import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useUserData } from '@/lib/hooks/useUserData';
 import { useAccountData } from '@/lib/hooks/useAccountData';
+import LogOutAction from '@/lib/global-actions/LogOutAction';
 
 export function AppSidebar({
   items,
@@ -158,7 +159,7 @@ export function AppSidebar({
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => LogOutAction()}>
                   <LogOut />
                   Log out
                 </DropdownMenuItem>

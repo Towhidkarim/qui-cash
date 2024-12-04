@@ -1,6 +1,7 @@
 'use client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from './ui/sonner';
+// import { Notifications } from '@bdhamithkumara/react-push-notification';
 import { createContext } from 'react';
 import { Session, User } from 'lucia';
 export const SessionContext = createContext<
@@ -34,6 +35,7 @@ export default function Providers({
     <>
       <QueryClientProvider client={queryClient}>
         <Toaster />
+        {/* <Notifications /> */}
         {children}
       </QueryClientProvider>
     </>

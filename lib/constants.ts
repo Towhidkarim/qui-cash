@@ -7,6 +7,7 @@ export const routes = {
   connect: '/dashboard/connect',
   cards: '/dashboard/cards',
   banks: '/dashboard/banks',
+  stats: '/dashboard/stats',
   addFunds: '/dashboard/addfunds',
   scan: '/dashboard/scan',
 };
