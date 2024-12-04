@@ -36,7 +36,7 @@ export const tabsContents: TtabsContent = [
     icon: <Receipt />,
     url: routes.transactionHistory,
   },
-  { title: 'my banks', icon: <BadgeDollarSign />, url: routes.banks },
+  { title: 'stats', icon: <BadgeDollarSign />, url: routes.stats },
   { title: 'cards', icon: <CreditCard />, url: routes.cards },
 ];
 
